@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import PropTypes from "prop-types";
 import { products } from "../assets/frontend_assets/assets";
 import { toast } from "react-toastify";
@@ -52,10 +52,11 @@ const ShopContextProvider = (props) => {
     return totalCount;
   };
 
-  useEffect(() => {
-    console.log(cartItems);
-  }, [cartItems]);
-
+  const updateQuantity = async (itemId, size, quantity) => {
+    let cartData = structuredClone(cartItems);
+    cartData[itemId][size] = quantity;
+    setCartItems(cartData);
+  };
   const value = {
     products,
     currency,
@@ -67,6 +68,7 @@ const ShopContextProvider = (props) => {
     cartItems,
     addToCart,
     getCartCount,
+    updateQuantity,
   };
 
   return (
