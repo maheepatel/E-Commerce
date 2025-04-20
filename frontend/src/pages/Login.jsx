@@ -22,12 +22,27 @@ const Login = () => {
           email,
           password,
         });
-        console.log(response.data.message);
+        if (response.data.success) {
+          setToken(response.data.token);
+          localStorage.setItem("token", response.data.token);
+        } else {
+          toast.error(response.data.message);
+        }
       } else {
         // call Login API
+        const response = await axios.post(backendUrl + "/api/user/login", {
+          email,
+          password,
+        });
+        if (response.data.success) {
+          setToken(response.data.token);
+          localStorage.setItem("token", response.data.token);
+        } else {
+          toast.error(response.data.message);
+        }
       }
     } catch (error) {
-      console.log("error: ", error.response.data.message);
+      console.log("error: ", error);
 
       toast.error(error.response.data.message);
     }
