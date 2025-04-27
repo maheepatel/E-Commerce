@@ -143,8 +143,6 @@ const ShopContextProvider = (props) => {
         }
       );
 
-      console.log(response);
-
       if (response.data.cartData) {
         setCartItems(response.data.cartData);
       }
@@ -175,6 +173,7 @@ const ShopContextProvider = (props) => {
     setShowSearch,
     cartItems,
     addToCart,
+    setCartItems,
     getCartCount,
     updateQuantity,
     getCartAmount,
