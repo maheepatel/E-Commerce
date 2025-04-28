@@ -3,6 +3,7 @@ import Title from "../components/Title";
 import CartTotal from "../components/CartTotal";
 import { assets } from "../assets/frontend_assets/assets";
 import { ShopContext } from "../context/ShopContext";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 const PlaceOrder = () => {
@@ -71,10 +72,16 @@ const PlaceOrder = () => {
               backendUrl + "/api/order/place",
               orderData,
               { headers: { token } }
-            );
+            ); 
+
             if (response.data.success) {
               setCartItems({});
+              toast.success("Order placed successfully.");
               navigate("/orders");
+            } else {
+              toast.error(
+                `Error placing order due to ${response.data.message}. Please try again.`
+              );
             }
           }
           break;
@@ -84,6 +91,7 @@ const PlaceOrder = () => {
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
+      toast.error("Error placing order. Please try again.");
     }
   };
 
