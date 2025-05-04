@@ -49,6 +49,28 @@ const PlaceOrder = () => {
       receipt: order.receipt,
       handler: async (response) => {
         console.log(response);
+
+        try {
+          const { data } = await axios.post(
+            backendUrl + "/api/order/verifyRazorpay",
+            response,
+            { headers: { token } }
+          );
+          if (data.success) {
+            setCartItems({});
+            toast.success("Order placed successfully.");
+            navigate("/orders");
+          } else {
+            toast.error(
+              `Error placing order due to ${data.message}. Please try again.`
+            );
+          }
+        } catch (error) {
+          console.error("Error verifying payment:", error);
+          toast.error(
+            `Payment verification failed due to ${error.message}. Please try again.`
+          );
+        }
       },
     };
     const rzp = new window.Razorpay(options);
